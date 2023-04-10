@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- displays site properly based on user's device -->
+		<link rel="stylesheet" href="style.css">
+
+		<link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+		<title>Frontend Mentor | Calculator app</title>
+	</head>
+
+	<body class="theme-1">
+		<main class="main">
+			<div class="container">
+				<div class="container container__theme">
+					<span class="container container__theme container__theme-label">calc</span>
+					<div class="theme">
+						<div class="theme theme__item theme__item-label">THEME</div>
+						<div class="theme theme__item">
+							<datalist id="themes" class="theme theme__item theme__item-datalist">
+								<option value="1" label="1"></option>
+								<option value="2" label="2"></option>
+								<option value="3" label="3"></option>
+							</datalist>
+							<input list="themes" class="theme__input" type="range" name="themes" id="theme-slicer"
+								min="1" max="3" value="0" step="1">
+						</div>
+					</div>
+				</div>
+				<div class="container container__result">
+					<p id="calculation">&nbsp;</p>
+				</div>
+				<div class=" container container__pad">
+					<button id="btn-7" class="item">7</button>
+					<button id="btn-8" class="item">8</button>
+					<button id="btn-9" class="item">9</button>
+					<button class="item item__primary" onclick="deletion()">DEL</button>
+
+
+					<button id="btn-4" class="item">4</button>
+					<button id="btn-5" class="item">5</button>
+					<button id="btn-6" class="item">6</button>
+					<button id="btn-+" class="item">+</button>
+
+					<button id="btn-1" class="item">1</button>
+					<button id="btn-2" class="item">2</button>
+					<button id="btn-3" class="item">3</button>
+					<button id="btn--" class="item">-</button>
+
+					<button id="btn-." class="item">.</button>
+					<button id="btn-0" class="item">0</button>
+					<button id="btn-/" class="item">/</button>
+					<button id="btn-x" class="item">x</button>
+
+					<button class="item item__double item__primary" onclick="reset()">RESET</button>
+					<button class="item item__double item__danger" onclick="calculate()">=</button>
+
+				</div>
+			</div>
+		</main>
+		<script>
+			//for theme change
+			document.getElementById('theme-slicer').addEventListener('input', changeTheme)
+
+			function changeTheme(e) {
+				console.log('theme-' + e.target.value)
+				document.body.removeAttribute('class');
+				document.body.classList.add('theme-' + e.target.value);
+			}
+			//for input
+			const btns = document.querySelectorAll('button[id^=btn]')
+			const screen = document.getElementById('calculation')
+
+			btns.forEach(btn => {
+				btn.addEventListener('click', event => {
+					screenWrite(event.target.id.split('btn-').pop())
+				});
+			});
+			//add input to screen
+			function screenWrite(input) {
+				let contentLength = screen.innerHTML.split('&nbsp;').pop().length
+				//character limit at 32
+				if (contentLength < 32) {
+					let newContent = input
+					let currentContent = screen.innerHTML.replace('&nbsp;', '')
+					var whole = currentContent
+
+					//when operation symbol added, store left part of the operation and remove it from var currentContent 
+					if (currentContent.match(/[+\-/\x]/)) {
+						var lefty = currentContent.split(/[+\-/\x]/)[0]
+						var right = currentContent.split(/[+\-/\x]/)[1]
+						var symbl = currentContent[currentContent.search(/[+\-/\x]/)]
+						currentContent = right
+					}
+
+					//replace first 0 with next number
+					if (currentContent == '0' && !newContent == '0' && !newContent.match(/[+\-./\x]/)) {
+						if (lefty === undefined) {
+							screen.innerHTML = newContent
+						} else {
+							screen.innerHTML = lefty + symbl + newContent
+						}
+						return
+					}
+
+					//prevent adding more than 1 symbol excluding dot
+					if (newContent.match(/[+\-/\x]/) && whole.match(/[+\-/\x]/)) {
+						//change symbol if other symbol pressed
+						if (right === '') {
+							whole = whole.replace(symbl, newContent)
+							screen.innerHTML = whole
+						}
+						return
+					}
+					//if symbol is added, add 0 before
+					if (currentContent == '' && newContent.match(/[.+\-/\x]/)) {
+						newContent = '0' + newContent
+					}
+					//prevent adding more than 1 dot to both sides of operation
+					if (currentContent.match(/[.]/) && newContent.match(/[.]/)) {
+						return
+					}
+
+					screen.innerHTML += newContent
+					//console.log("screen content >>" + screen.innerHTML);
+					///keep scrollbar at rigth
+					screen.scroll(1000, 0)
+				}
+			}
+			//calculate
+			function calculate(){
+				let currentContent = screen.innerHTML.split('&nbsp;').pop().split('').join('')
+					currentContent = currentContent.replace('x', '*')
+				let result = eval(currentContent)
+				screen.innerHTML = result
+			}
+			//reset
+			function reset() {
+				screen.innerHTML = '&nbsp;';
+			}
+			//delete 
+			function deletion() {
+				let currentContent = screen.innerHTML.split('&nbsp;').pop().split('')
+				//if content then delete
+				if (currentContent.length != 0) {
+					currentContent.pop()
+					currentContent = currentContent.join('')
+					screen.innerHTML = currentContent
+					//if screen empty then add space to keep p, div size
+					if (currentContent.length == 0) {
+						screen.innerHTML = '&nbsp;'
+					}
+				}
+			}
+		</script>
+	</body>
+
+</html>

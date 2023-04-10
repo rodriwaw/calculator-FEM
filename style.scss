@@ -1,0 +1,243 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&display=swap");
+
+.theme-1 {
+  --background-main: hsl(222, 26%, 31%);
+  --background-middle: hsl(223, 31%, 20%);
+  --background-screen: hsl(224, 36%, 15%);
+
+  --key-primary: hsl(225, 21%, 49%);
+  --key-primary-shadow: hsl(224, 28%, 35%);
+
+  --key-danger: hsl(6, 63%, 50%);
+  --key-danger-shadow: hsl(6, 70%, 34%);
+
+  --key-main: hsl(30, 25%, 89%);
+  --key-main-shadow: hsl(28, 16%, 65%);
+
+  --text-main: hsl(221, 14%, 31%);
+  --text-sub: hsl(0, 0%, 100%);
+  --text-theme: var(--text-sub);
+}
+.theme-2 {
+  --background-main: hsl(0, 0%, 90%);
+  --background-middle: hsl(0, 5%, 81%);
+  --background-screen: hsl(0, 0%, 93%);
+
+  --key-primary: hsl(185, 42%, 37%);
+  --key-primary-shadow: hsl(185, 58%, 25%);
+
+  --key-danger: hsl(25, 98%, 40%);
+  --key-danger-shadow: hsl(25, 99%, 27%);
+
+  --key-main: hsl(45, 7%, 89%);
+  --key-main-shadow: hsl(35, 11%, 61%);
+
+  --text-main: hsl(60, 10%, 19%);
+  --text-sub: hsl(0, 0%, 100%);
+  --text-theme: var(--text-main);
+
+}
+.theme-3 {
+  --background-main: hsl(268, 75%, 9%);
+  --background-middle: hsl(268, 71%, 12%);
+  --background-screen: var(--background-middle);
+
+  --key-primary: hsl(281, 89%, 26%);
+  --key-primary-shadow: hsl(285, 91%, 52%);
+
+  --key-danger: hsl(176, 100%, 44%);
+  --key-danger-shadow: hsl(177, 92%, 70%);
+
+  --key-main: hsl(268, 47%, 21%);
+  --key-main-shadow: hsl(290, 70%, 36%);
+
+  --text-main: hsl(52, 100%, 62%);
+  --text-sub: hsl(0, 0%, 100%);
+  --text-theme: var(--text-main);
+
+  // Very dark blue: hsl(198, 20%, 13%)
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "League Spartan", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  background-color: var(--background-main);
+  
+}
+.main {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin: auto;
+  color: var(--text-theme);
+
+  &__theme {
+    margin: 0 0 0.5rem;
+    flex-direction: row;
+    justify-content: space-between;
+    &-label {
+      margin: 0;
+      align-self: end;
+      align-items: center;
+      font-size: 1.25rem;
+    }
+  }
+  &__result {
+    background-color: var(--background-screen);
+    padding: 1rem;
+    text-align: end;
+    width: 100%;
+    justify-content: center;
+    border-radius: 7px;
+    flex-grow: 0;
+    p {
+      background-color: inherit;
+      font-size: 2.5rem;
+      overflow-x: scroll;
+      max-width: 290px;
+      unicode-bidi: bidi-override !important;
+      direction: unset !important;
+      text-align:right;
+    }
+    p::-webkit-scrollbar {
+      height: .75rem;              
+    }
+    p::-webkit-scrollbar-track {
+      background: none;        
+    }
+    p::-webkit-scrollbar-thumb {
+      background-color: var(--key-main-shadow);    /* color of the scroll thumb */
+      border-radius: 7px;       /* roundness of the scroll thumb */
+      border: 3px solid var(--key-main-shadow);  /* creates padding around scroll thumb */
+    }
+  }
+  &__pad {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 0.7rem;
+    background-color: var(--background-middle);
+    border-radius: 7px;
+    padding: 1rem;
+  }
+}
+.theme {
+  display: flex;
+  justify-content: end;
+  &__item {
+    flex-direction: column;
+    width: 30%;
+    &-datalist {
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-around;
+      option {
+        font-size: 0.7rem;
+      }
+    }
+    &-label {
+      align-self: end;
+      align-items: center;
+      height: 1.25rem;
+      font-size: 0.7rem;
+      justify-content: center;
+    }
+  }
+}
+.item {
+  color: var(--text-main);
+  background: var(--key-main);
+  transform-style: preserve-3d;
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1);
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  font-size: 1.5rem;
+  width: 4rem;
+  height: 2.5rem;
+  border-radius: 7px;
+  &__double {
+    grid-column: span 2;
+    width: 100%;
+  }
+  &__danger {
+    color: var(--text-sub);
+    background-color: var(--key-danger);
+    &::before {
+      background: var(--key-danger-shadow) !important;
+    }
+  }
+  &__primary {
+    color: var(--text-sub);
+    background-color: var(--key-primary);
+    font-size: 1.2em;
+    &::before {
+      background: var(--key-primary-shadow) !important;
+    }
+  }
+  &:hover {
+    box-shadow: inset 0 0 0 10em rgba(255, 255, 255, 0.3);
+    &::before {
+      box-shadow: inset 0 0 0 10em rgba(255, 255, 255, 0.2);
+    }
+  }
+  &::before {
+    font-size: 1.5rem;
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    top: -0.75rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--key-main-shadow);
+    border-radius: inherit;
+    transform: translate3d(0, 1rem, -1rem);
+    transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+  }
+  &:active {
+    transform: translate(0, 0.25rem);
+    &::before {
+      transform: translate3d(0, 0.75rem, -1rem);
+    }
+  }
+}
+input[type="range"] {
+  appearance: none;
+  width: 100%;
+  height: 1.25rem;
+  align-items: center;
+  display: flex;
+  &::-webkit-slider-runnable-track {
+    width: 35%;
+    height: 1rem;
+    cursor: pointer;
+    background: var(--background-middle);
+    border-radius: 1rem;
+    padding: 0.1rem 5%;
+  }
+  &::-webkit-slider-thumb {
+    height: 0.8rem;
+    width: 0.8rem;
+    border-radius: 1rem;
+    background: var(--key-danger);
+    cursor: pointer;
+    -webkit-appearance: none;
+    &:hover {
+      box-shadow: inset 0 0 0 10em rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+/*   * {
+          outline: 1px solid #f00 !important;
+      } */
